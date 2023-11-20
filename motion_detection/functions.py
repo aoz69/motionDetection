@@ -11,7 +11,7 @@ video_writer = None
 image_directory = 'images'
 
 # Specify the name of the output video file.
-output_video_name = 'output_video.avi'
+output_video_name = 'videos/Video.avi'
 
 
 
@@ -107,8 +107,14 @@ def save_cropped_image(frame):
     images_to_video(image_directory, output_video_name)
 
 
+def images_to_video(image_folder, video_name='videos/output_video.avi', fps=10):
+    # Define the video directory path
+    video_dir = os.path.dirname(video_name)
 
-def images_to_video(image_folder, video_name='output_video.avi', fps=10):
+    # Check if the directory exists, and if not, create it.
+    if not os.path.exists(video_dir):
+        os.makedirs(video_dir)
+
     images = [img for img in os.listdir(image_folder) if img.endswith(".jpg")]
     frame = cv2.imread(os.path.join(image_folder, images[0]))
     height, width, layers = frame.shape
