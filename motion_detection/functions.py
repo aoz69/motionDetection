@@ -8,6 +8,11 @@ is_recording = False
 start_time = 0
 video_writer = None
 
+image_directory = 'images'
+
+# Specify the name of the output video file.
+output_video_name = 'output_video.avi'
+
 
 
 
@@ -99,8 +104,22 @@ def save_cropped_image(frame):
 
     # Save the cropped image to the specified file path.
     cv2.imwrite(filename_cropped, frame)
+    images_to_video(image_directory, output_video_name)
 
 
+
+def images_to_video(image_folder, video_name='output_video.avi', fps=10):
+    images = [img for img in os.listdir(image_folder) if img.endswith(".jpg")]
+    frame = cv2.imread(os.path.join(image_folder, images[0]))
+    height, width, layers = frame.shape
+
+    video = cv2.VideoWriter(video_name, cv2.VideoWriter_fourcc(*'DIVX'), fps, (width, height))
+
+    for image in images:
+        video.write(cv2.imread(os.path.join(image_folder, image)))
+
+    cv2.destroyAllWindows()
+    video.release()
 
 # Function to display a video frame
 def show_video_frame(frame):
